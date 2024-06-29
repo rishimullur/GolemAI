@@ -16,8 +16,8 @@ def generate_context(user_base: UserBase, chat_base: ChatBase, message_base: Mes
     messages = chat_base.messages
 
     concat_chat = ""
-    for chat in chats:
-        concat_chat += f"Chat: {chat.chat_id}\n"
+    for message in messages:
+        concat_chat += f"{message.sender.username}: {message.text}\n"
 
 
 
