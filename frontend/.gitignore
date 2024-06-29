@@ -1,0 +1,8 @@
+.env
+.venv
+venv
+backend.py
+frontend.py
+app.py
+chat_data.txt
+group_data.txt
