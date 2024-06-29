@@ -14,11 +14,11 @@ class ChatBase(pydantic.BaseModel):
     chat_id: int
     min_responses: Optional[int] = 4
     users: List[UserBase]
+    messages: List["MessageBase"] = []
 
 
 class MessageBase(pydantic.BaseModel):
     message_id: int
-    chat: ChatBase
     sender: UserBase
     text: str
     date: datetime
