@@ -20,7 +20,6 @@ def save(user_base: UserBase, chat_base: ChatBase, message_base: MessageBase):
         concat_chat += f"{message.sender.username}: {message.text}\n"
 
 
-
 def retrieve():
 
     context = ""
