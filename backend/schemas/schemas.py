@@ -10,8 +10,12 @@ class UserBase(pydantic.BaseModel):
     user_id: Optional[int] = None
 
 
-class ChatBase(pydantic.BaseModel):
+class ChatID(pydantic.BaseModel):
     chat_id: int
+
+
+class ChatBase(pydantic.BaseModel):
+    chat_id: ChatID
     min_responses: Optional[int] = 4
     users: List[UserBase]
     messages: List["MessageBase"] = []
