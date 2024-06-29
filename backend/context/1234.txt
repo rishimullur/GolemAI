@@ -1,0 +1,5 @@
+{
+    "chat_id": 1234,
+    "min_responses": 3,
+    "concat_chat": "This is a test"
+    }
