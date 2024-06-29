@@ -56,11 +56,12 @@ def retrieve_context():
 
 def llama_chat(question: str) -> str:
     """Chat with the llama."""
-    client = OctoAI(api_key=octo_api_key,)
+    client = OctoAI(api_key=octo_api_key)
 
-    context = retrieve_context()  # Retrieve the context from the context.txt file
+    retriever = retrieve_context()  # Retrieve the context from the context.txt file
+    print(retriever)
 
-    template = """You suggest things or places to be. Use the following pieces of retrieved context to answer the question. If you don't know the answer, just say that you don't know. Use three sentences maximum and keep the answer concise.
+    template = """You suggest things or places to be. Use the following pieces of retrieved context to answer the question. If you don't know the answer, just say that you don't know. Use sentences maximum and keep the answer concise. The context is a collection of chat messages from a individual set of users in a group. The context contains the entire conversation history, but the response will only got to a single user. The response should nudge and finally make the user to figure out where to go as a group.
     Question: {question} 
     Context: {context} 
     Answer:"""
@@ -75,12 +76,14 @@ def llama_chat(question: str) -> str:
                 content=formatted_template,
             ),
         ],
-        max_tokens=150,
+        max_tokens=10000,
     )
 
-    print(json.dumps(completion.dict(), indent=2))
+    response_content = completion.choices[0].message.content  # Extract the content from the response
 
-    return completion  # Return the completion as a string
+    print(response_content)
+
+    return response_content
 
 
 

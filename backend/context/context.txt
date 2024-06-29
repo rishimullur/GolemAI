@@ -1,0 +1,50 @@
+{
+  "chat_id": "124",
+  "min_responses": 2,
+  "concat_chat": "user1: Hello, how are you?\nuser2: I'm good, thanks!\n"
+},
+{
+  "chat_id": "125",
+  "min_responses": 1,
+  "concat_chat": "user3: What's the weather like?\nuser4: It's sunny today.\n"
+},
+{
+  "chat_id": "126",
+  "min_responses": 3,
+  "concat_chat": "user5: Good morning!\nuser6: Good morning! How are you?\nuser5: I'm great, thanks!\n"
+},
+{
+  "chat_id": "127",
+  "min_responses": 2,
+  "concat_chat": "user7: What's for lunch?\nuser8: We're having pizza.\n"
+},
+{
+  "chat_id": "128",
+  "min_responses": 1,
+  "concat_chat": "user9: Where's the meeting?\nuser10: It's in the conference room.\n"
+},
+{
+  "chat_id": "129",
+  "min_responses": 2,
+  "concat_chat": "user11: Can you help me with this?\nuser12: Sure, what do you need?\n"
+},
+{
+  "chat_id": "130",
+  "min_responses": 3,
+  "concat_chat": "user13: I'm going on vacation.\nuser14: That's great! Where are you going?\nuser13: I'm going to the beach.\n"
+},
+{
+  "chat_id": "131",
+  "min_responses": 1,
+  "concat_chat": "user15: Do you have the report?\nuser16: Yes, I'll send it to you.\n"
+},
+{
+  "chat_id": "132",
+  "min_responses": 2,
+  "concat_chat": "user17: What time is it?\nuser18: It's 3 o'clock.\n"
+},
+{
+  "chat_id": "133",
+  "min_responses": 3,
+  "concat_chat": "user19: I'm feeling sick.\nuser20: I'm sorry to hear that. Do you need anything?\nuser19: No, I'm okay. Thanks.\n"
+}

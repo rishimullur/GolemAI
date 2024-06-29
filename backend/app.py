@@ -40,6 +40,7 @@ def process():
             return HTTPException(status_code=200, detail={"status": "success", "message": "Not enough responses to process"})
 
         response = llama_chat(concat_chat)
+        # response = llama_chat("Where is seatttle?")
 
         return HTTPException(status_code=200, detail={"status": "success", "response": response})
 
