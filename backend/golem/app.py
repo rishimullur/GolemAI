@@ -12,10 +12,10 @@ octo_api_key = os.getenv("OCTO_API_KEY")
 
 # Use the Octo API key in your code
 # (replace this with your actual code that uses the API key)
-if octo_api_key:
-    print("Octo API key:", octo_api_key)
-else:
-    print("Octo API key not found in environment variables.")
+# if octo_api_key:
+#     print("Octo API key:", octo_api_key)
+# else:
+#     print("Octo API key not found in environment variables.")
 
 class GroupEvent:
     def __init__(self, eventid):
