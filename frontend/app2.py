@@ -47,7 +47,7 @@ def save_data(file_path, data):
     with open(file_path, "w") as file:
         json.dump(data_dict, file, default=str)
 
-# Load initial data into session state
+# Initialize session state variables
 if 'groups' not in st.session_state:
     st.session_state['groups'] = load_data(group_file_path, UserBase)
 
@@ -56,6 +56,15 @@ if 'chats' not in st.session_state:
 
 if 'votes' not in st.session_state:
     st.session_state['votes'] = load_data(voting_file_path, BaseModel)
+
+if 'user_id' not in st.session_state:
+    st.session_state['user_id'] = None
+
+if 'group_code' not in st.session_state:
+    st.session_state['group_code'] = None
+
+if 'username' not in st.session_state:
+    st.session_state['username'] = None
 
 # Function to save chat data to JSON file
 def save_chat_data(group_code, user_id, message):
@@ -71,7 +80,8 @@ def save_chat_data(group_code, user_id, message):
 # Function to save user data to JSON file
 def save_user_data(group_code, user_id, username):
     if group_code not in st.session_state['groups']:
-        st.session_state['groups'][group_code] = UserBase(username=username, group_id=group_code, full_name=None, user_id=user_id)
+        st.session_state['groups'][group_code] = {}
+    st.session_state['groups'][group_code][user_id] = UserBase(username=username, group_id=group_code, full_name=None, user_id=user_id)
     save_data(group_file_path, st.session_state['groups'])
 
 # Function to save voting data to JSON file
@@ -84,7 +94,7 @@ def show_chat_interface():
 
     # Display users in the group
     st.sidebar.title("Users in this group")
-    for user in st.session_state['groups'].values():
+    for user_id, user in st.session_state['groups'].get(st.session_state['group_code'], {}).items():
         st.sidebar.write(f"{user.username} (User ID: {user.user_id})")
 
     # Input for user message
@@ -95,48 +105,13 @@ def show_chat_interface():
 
         # Placeholder response
         response = "This is a placeholder response from the bot."
-        save_chat_data(st.session_state['group_code'], "bot", response)
-
-        st.experimental_rerun()  # Use experimental_rerun due to st.rerun() issue
+        st.write(f"{datetime.now().isoformat()} - Bot: {response}")
 
     # Display chat history
     if st.session_state['group_code'] in st.session_state['chats']:
         chat_history = st.session_state['chats'][st.session_state['group_code']].messages
         for message in chat_history:
             st.write(f"{message.date} - {message.sender.username}: {message.text}")
-
-    if st.button("Finish Chat", key="finish_chat_button"):
-        show_voting_page()
-
-# Function to display voting page
-def show_voting_page():
-    st.title("Voting Page")
-    st.write("Please vote for the suggested events:")
-
-    events = ["Event 1", "Event 2", "Event 3"]  # Replace with actual events
-
-    for event in events:
-        st.write(event)
-        thumbs_up = st.button(f"👍 ({st.session_state['votes'].get(event, 0)})", key=f"thumbs_up_{event}")
-        thumbs_down = st.button(f"👎", key=f"thumbs_down_{event}")
-
-        if thumbs_up:
-            st.session_state['votes'][event] = st.session_state['votes'].get(event, 0) + 1
-            save_voting_data(st.session_state['votes'])
-        if thumbs_down:
-            # Implement thumbs down functionality if needed
-            pass
-
-    st.title("Results")
-    main_event = max(st.session_state['votes'], key=st.session_state['votes'].get)
-    st.write(f"The main event is: {main_event}")
-
-    st.write("Event Details:")
-    st.write("Event details here...")
-
-    if st.button("Finish Voting", key="finish_voting_button"):
-        # Implement post-voting actions
-        pass
 
 # Initial screen for joining the group
 if st.session_state['user_id'] is None:
@@ -150,13 +125,12 @@ if st.session_state['user_id'] is None:
         if group_code and username:
             user_id = str(uuid.uuid4())
 
-            st.session_state['groups'] = {group_code: UserBase(username=username, group_id=group_code, full_name=None, user_id=user_id)}
+            st.session_state['groups'] = {group_code: {user_id: UserBase(username=username, group_id=group_code, full_name=None, user_id=user_id)}}
             save_user_data(group_code, user_id, username)
 
             st.session_state['user_id'] = user_id
             st.session_state['group_code'] = group_code
             st.session_state['username'] = username
 
-            st.experimental_rerun()  # Use experimental_rerun due to st.rerun() issue
 else:
     show_chat_interface()
