@@ -42,8 +42,6 @@ def save(user_base: UserBase, chat_base: ChatBase, message_base: MessageBase):
 
 def retrieve():
 
-    context = ""
-
     with open(os.path.join(context_dir, 'context.txt'), 'r') as f:
         raw_context = f.read()
 
