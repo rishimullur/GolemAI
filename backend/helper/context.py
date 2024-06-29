@@ -19,13 +19,23 @@ def save(user_base: UserBase, chat_base: ChatBase, message_base: MessageBase):
     for message in messages:
         concat_chat += f"{message.sender.username}: {message.text}\n"
 
+    try:
+
+        with open(os.path.join(context_dir, 'context.txt'), 'w') as f:
+            f.write(context)
+
+        return True
+
+    except Exception as e:
+        return e
+
 
 def retrieve():
 
     context = ""
 
     with open(os.path.join(context_dir, 'context.txt'), 'w') as f:
-        f.write(context)
+        f.read(context)
 
     # return "Who was the president of the United States in 2016?"
 
