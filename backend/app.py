@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 import uvicorn
+from golem.app import llama_chat 
 
 app = FastAPI()
 
@@ -14,7 +15,7 @@ def read_item(item_id: int, q: str = None):
 
 @app.get("/chat")
 def chat():
-    print("Chat input recived")
+    llama_chat("What is the capital of France?")
     # return {"chat": "chat"}
 
 if __name__ == "__main__":
