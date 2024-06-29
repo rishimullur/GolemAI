@@ -41,9 +41,7 @@ def process(chat_id_input: ChatID):
         # if min_responses < 4:
         #     return HTTPException(status_code=200, detail={"status": "success", "message": "Not enough responses to process"})
 
-        print(concat_chat)
-
-        response = llama_chat("This is a test message")
+        response = llama_chat(concat_chat)
 
         print("End llama req")
 
