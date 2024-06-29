@@ -7,7 +7,7 @@ parent_dir = os.path.dirname(current_dir)
 context_dir = os.path.join(parent_dir, 'context')
 
 
-def generate_context(user_base: UserBase, chat_base: ChatBase, message_base: MessageBase):
+def save(user_base: UserBase, chat_base: ChatBase, message_base: MessageBase):
 
     context = ""
     chat_id = chat_base.chat_id
@@ -21,7 +21,7 @@ def generate_context(user_base: UserBase, chat_base: ChatBase, message_base: Mes
 
 
 
-def retrieve_context():
+def retrieve():
 
     context = ""
 
