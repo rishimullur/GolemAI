@@ -8,12 +8,11 @@ parent_dir = os.path.dirname(current_dir)
 context_dir = os.path.join(parent_dir, 'context')
 
 
-def save(user_base: UserBase, chat_base: ChatBase, message_base: MessageBase):
+def save(chat_base: ChatBase):
 
     context = ""
     chat_id = chat_base.chat_id
     min_responses = chat_base.min_responses
-    users = chat_base.users
     messages = chat_base.messages
 
     concat_chat = ""
