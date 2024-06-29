@@ -34,11 +34,11 @@ def retrieve():
 
     context = ""
 
-    with open(os.path.join(context_dir, 'context.txt'), 'w') as f:
-        f.read(context)
+    with open(os.path.join(context_dir, 'context.txt'), 'r') as f:
+        context = f.read()
+
+    return context
 
     # return "Who was the president of the United States in 2016?"
-
-    return "Who was the president of the United States in 2016?"
 
 
