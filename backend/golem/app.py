@@ -4,10 +4,16 @@ from langchain_community.llms.octoai_endpoint import OctoAIEndpoint
 from langchain.prompts import ChatPromptTemplate
 from langchain_core.runnables import RunnablePassthrough
 from langchain_core.output_parsers import StrOutputParser
+from octoai.text_gen import ChatMessage
+import json
+
+from octoai.client import OctoAI
+
+
 
 load_dotenv()
 
-octo_api_key = os.getenv("OCTO_API_KEY")
+octo_api_key = os.getenv("OCTOAI_API_TOKEN")
 
 if not octo_api_key:
     raise ValueError("Octo API key not found in environment variables.")
@@ -42,37 +48,39 @@ def retrieve_context():
     """
     Retrieve the context from the context.txt file.
     """
-    with open(os.path.join(context_dir, 'context.txt'), 'r') as f:
+    context_dir = os.path.join(os.path.dirname(__file__))
+    with open('/Users/rishi/dev/GolemAI-1/backend/context.txt', 'r') as f:
         context = f.read()
 
     return context
 
 def llama_chat(question: str) -> str:
     """Chat with the llama."""
-    llm = OctoAIEndpoint(
-        model="meta-llama-3-8b-instruct",
-        max_tokens=1024,
-        presence_penalty=0,
-        temperature=0.1,
-        top_p=0.9,
-    )
-    
+    client = OctoAI(api_key=octo_api_key,)
+
     context = retrieve_context()  # Retrieve the context from the context.txt file
-    
-    template="""You are a tour guide. Use the following pieces of retrieved context to answer the question. If you don't know the answer, just say that you don't know. Use three sentences maximum and keep the answer concise.
+
+    template = """You suggest things or places to be. Use the following pieces of retrieved context to answer the question. If you don't know the answer, just say that you don't know. Use three sentences maximum and keep the answer concise.
     Question: {question} 
     Context: {context} 
     Answer:"""
-    prompt = ChatPromptTemplate.from_template(template)
-    chain = (
-        {"context": context, "question": question}  # Use the retrieved context and the provided question
-        | prompt
-        | llm
-        | StrOutputParser()
+
+    formatted_template = template.format(question=question, context=retriever)
+
+    completion = client.text_gen.create_chat_completion(
+        model="meta-llama-3-8b-instruct",
+        messages=[
+            ChatMessage(
+                role="system",
+                content=formatted_template,
+            ),
+        ],
+        max_tokens=150,
     )
-    
-    response = chain.run()  # Run the chain and save the response
-    return response  # Return the response as a string
+
+    print(json.dumps(completion.dict(), indent=2))
+
+    return completion  # Return the completion as a string
 
 
 
