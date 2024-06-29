@@ -27,6 +27,8 @@ def retrieve():
     with open(os.path.join(context_dir, 'context.txt'), 'w') as f:
         f.write(context)
 
-    return context
+    # return "Who was the president of the United States in 2016?"
+
+    return "Who was the president of the United States in 2016?"
 
 
