@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from helper.context import save, retrieve
-from schemas.schemas import UserBase, ChatBase, MessageBase
+from schemas.schemas import UserBase, ChatBase, MessageBase, ChatID
 from golem.app import llama_chat
 import uvicorn
 
@@ -29,24 +29,32 @@ def save_chat(user_base: UserBase, chat_base: ChatBase, message_base: MessageBas
 
 
 @app.post("/process")
-def process():
+def process(chat_id_input: ChatID):
+
     try:
-        context_dict = retrieve()
-        chat_id = context_dict["chat_id"]
-        min_responses = context_dict["min_responses"]
+        chat_id = chat_id_input.chat_id
+
+        context_dict = retrieve(chat_id)
+
         concat_chat = context_dict["concat_chat"]
 
-        if min_responses < 4:
-            return HTTPException(status_code=200, detail={"status": "success", "message": "Not enough responses to process"})
+        # if min_responses < 4:
+        #     return HTTPException(status_code=200, detail={"status": "success", "message": "Not enough responses to process"})
 
-        response = llama_chat(concat_chat)
+        print(concat_chat)
+
+        response = llama_chat("This is a test message")
+
+        print("End llama req")
 
         return HTTPException(status_code=200, detail={"status": "success", "response": response})
 
     except Exception as e:
-        raise HTTPException(status_code=400, detail={"status": "error", "message": str(e)})
+        raise HTTPException(status_code=400, detail={"status": "error", "message": str(e), "chat_id": chat_id})
 
 #END TD
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="localhost", port=8005)
+    print("Starting server...")
+    uvicorn.run("app:app", host="localhost", port=8005, use_colors=False)
+    print("Server stopped.")

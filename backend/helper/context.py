@@ -31,18 +31,34 @@ def save(user_base: UserBase, chat_base: ChatBase, message_base: MessageBase):
     context = json.dumps(context_dict)
 
     try:
-        with open(os.path.join(context_dir, f'{chat_id}.txt'), 'w') as f:
-            f.write(context)
+        if not os.path.exists(os.path.join(context_dir, f'{chat_id}.txt')):
+            # write the initial context to the file
+            with open(os.path.join(context_dir, f'{chat_id}.txt'), 'w') as f:
+                f.write(context)
+        else:
+            # retrieve the concat_chat from the file and append the new messages
+            with open(os.path.join(context_dir, f'{chat_id}.txt'), 'r') as f:
+                raw_context = f.read()
 
-        return True
+            context_dict = json.loads(raw_context)
+            old_concat_chat = context_dict["concat_chat"]
+            new_concat_chat = old_concat_chat + concat_chat
+
+            context_dict["concat_chat"] = new_concat_chat
+
+            context = json.dumps(context_dict)
+
+            # overwrite the file with the updated context
+            with open(os.path.join(context_dir, f'{chat_id}.txt'), 'w') as f:
+                f.write(context)
 
     except Exception as e:
-        return e
+        print(e)
 
 
-def retrieve():
+def retrieve(chat_id):
 
-    with open(os.path.join(context_dir, 'context.txt'), 'r') as f:
+    with open(os.path.join(context_dir, f'{chat_id}.txt'), 'r') as f:
         raw_context = f.read()
 
     context_dict = json.loads(raw_context)
