@@ -1,0 +1,5 @@
+{
+    "chat_id": 456,
+    "min_responses": 3,
+    "concat_chat": " I want to go eat steak. But where to eat in a Seattle? I am not sure spending the entire envening outside though."
+    }
