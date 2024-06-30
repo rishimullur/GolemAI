@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from helper.context import save, retrieve
 from schemas.schemas import UserBase, ChatBase, MessageBase, ChatID
-from golem.app import llama_chat
+from golem.app import llama_chat, llama_decide
 import uvicorn
 
 app = FastAPI()
@@ -41,13 +41,23 @@ def process(chat_id_input: ChatID):
         # if min_responses < 4:
         #     return HTTPException(status_code=200, detail={"status": "success", "message": "Not enough responses to process"})
 
-        print(concat_chat)
-
-        response = llama_chat("This is a test message")
-
-        print("End llama req")
+        response = llama_chat(concat_chat,chat_id)
 
         return HTTPException(status_code=200, detail={"status": "success", "response": response})
+
+    except Exception as e:
+        raise HTTPException(status_code=400, detail={"status": "error", "message": str(e), "chat_id": chat_id})
+
+@app.post("/decide")
+def decide():
+    try:
+        # chat_id = chat_id_input.chat_id
+        # context_dict = retrieve(chat_id)
+        # concat_chat = context_dict["concat_chat"]
+
+        recommendations = llama_decide()
+
+        return HTTPException(status_code=200, detail={"status": "success", "recommendations": recommendations})
 
     except Exception as e:
         raise HTTPException(status_code=400, detail={"status": "error", "message": str(e), "chat_id": chat_id})
