@@ -1,7 +1,5 @@
 # GolemAI
 
-# GolemAI
-
 GolemAI is app created to organize and plan group events as a helper agent in any messaging platform. The application is designed to facilitate group decision-making by suggesting places to go based on the chat history.
 
 ## Features
